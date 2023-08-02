@@ -1,0 +1,17 @@
+createUser:
+  handler: src/users/createUser/handler.default
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+      Resource:
+        - Fn::GetAtt:
+          - MyAppDatabase
+          - Arn
+  environment:
+    TABLE_NAME:
+      Ref: MyAppDatabase
+  events:
+    - http:
+        method: post
+        path: /v1/users
