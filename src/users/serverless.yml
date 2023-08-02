@@ -40,6 +40,10 @@ getUser:
     - Effect: Allow
       Action:
         - dynamodb:GetItem
+        - dynamodb:BatchGetItem
+        - dynamodb:Scan
+        - dynamodb:Query
+        - dynamodb:ConditionCheckItem
       Resource:
         Fn::GetAtt:
           - MyAppDatabase
@@ -50,4 +54,22 @@ getUser:
   events:
     - http:
         method: get
+        path: /v1/users
+
+editUser:
+  handler: src/users/editUser/handler.default
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:UpdateItem
+      Resource:
+        Fn::GetAtt:
+          - MyAppDatabase
+          - Arn
+  environment:
+    TABLE_NAME:
+      Ref:  MyAppDatabase
+  events:
+    - http:
+        method: put
         path: /v1/users

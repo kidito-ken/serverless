@@ -6,32 +6,20 @@ const ddb = new DocumentClient({
     region: "us-east-1"
 })
 
-export default middyfy(async (event) => {
-    const { name, email } = event.body;
-
-    if (!name || name.length === 0) {
-        return {
-            statusCode: 422,
-            body: JSON.stringify({
-                error: {
-                    title: "ValidatationError",
-                    message: "Name is required"
-                }
-            })
-        }
-    }
-    console.log({ event });
-
-    await ddb.get({
+export default middyfy(async () => {
+    let returnedData;
+    await ddb.scan({
         TableName: process.env.TABLE_NAME!,
-        Key: {
-            "pk": name,
-            "sk": email
+    }, function (err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            returnedData = JSON.stringify(data.Items);
         }
     }).promise();
 
     return {
         statusCode: 200,
-        body: null
+        body: returnedData
     }
 });
