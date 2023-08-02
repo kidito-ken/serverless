@@ -15,3 +15,21 @@ createUser:
     - http:
         method: post
         path: /v1/users
+
+deleteUser:
+  handler: src/users/deleteUser/handler.default
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DeleteItem
+      Resource:
+        Fn::GetAtt:
+          - MyAppDatabase
+          - Arn
+  environment:
+    TABLE_NAME:
+      Ref:  MyAppDatabase
+  events:
+    - http:
+        method: delete
+        path: /v1/users

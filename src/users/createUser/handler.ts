@@ -7,7 +7,7 @@ const ddb = new DocumentClient({
 })
 
 export default middyfy(async (event) => {
-  const { name, email, phoneNumber } = event.body;
+  const { name, email } = event.body;
 
   if (!name || name.length === 0) {
     return {
@@ -25,7 +25,7 @@ export default middyfy(async (event) => {
   await ddb.put({
     TableName: process.env.TABLE_NAME!,
     Item: {
-      "pk": "user",
+      "pk": name,
       "sk": email
     }
   }).promise();
