@@ -33,3 +33,21 @@ deleteUser:
     - http:
         method: delete
         path: /v1/users
+
+getUser:
+  handler: src/users/getUser/handler.default
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+      Resource:
+        Fn::GetAtt:
+          - MyAppDatabase
+          - Arn
+  environment:
+    TABLE_NAME:
+      Ref:  MyAppDatabase
+  events:
+    - http:
+        method: get
+        path: /v1/users
