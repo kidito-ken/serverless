@@ -39,11 +39,7 @@ getUser:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - dynamodb:GetItem
-        - dynamodb:BatchGetItem
         - dynamodb:Scan
-        - dynamodb:Query
-        - dynamodb:ConditionCheckItem
       Resource:
         Fn::GetAtt:
           - MyAppDatabase

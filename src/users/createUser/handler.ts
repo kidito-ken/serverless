@@ -1,22 +1,23 @@
+import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
 import { middyfy } from "@lib/middleware";
-import { PutItemCommand, DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 
 const client = new DynamoDBClient({});
+const docClient = DynamoDBDocumentClient.from(client);
 
 export default middyfy(async (event) => {
   const { name, email } = event.body;
-  const command = new PutItemCommand({
+  const command = new PutCommand({
     TableName: process.env.TABLE_NAME!,
     Item: {
-      pk: { S: name },
-      sk: { S: email },
+      pk: name,
+      sk: email,
     },
   });
 
-  const response = await client.send(command);
-  console.log(response);
+  const response = await docClient.send(command);
   return {
     statusCode: 200,
-    body: null
+    body: "User Created Successfully!"
   }
 });
