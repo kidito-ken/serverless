@@ -1,37 +1,22 @@
 import { middyfy } from "@lib/middleware";
+import { PutItemCommand, DynamoDBClient } from "@aws-sdk/client-dynamodb";
 
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-
-const ddb = new DocumentClient({
-  region: "us-east-1"
-})
+const client = new DynamoDBClient({});
 
 export default middyfy(async (event) => {
   const { name, email } = event.body;
-
-  if (!name || name.length === 0) {
-    return {
-      statusCode: 422,
-      body: JSON.stringify({
-        error: {
-          title: "ValidatationError",
-          message: "Name is required"
-        }
-      })
-    }
-  }
-  console.log({ event });
-
-  await ddb.put({
+  const command = new PutItemCommand({
     TableName: process.env.TABLE_NAME!,
     Item: {
-      "pk": name,
-      "sk": email
-    }
-  }).promise();
+      pk: { S: name },
+      sk: { S: email },
+    },
+  });
 
+  const response = await client.send(command);
+  console.log(response);
   return {
-    statusCode: 201,
+    statusCode: 200,
     body: null
   }
 });
