@@ -2,10 +2,12 @@ import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
 import { middyfy } from "@lib/middleware";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs"
+import { PublishCommand, SNSClient } from "@aws-sdk/client-sns"
 
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 const queueClient = new SQSClient({});
+const snsClient = new SNSClient({});
 
 export default middyfy(async (event) => {
   const { name, email } = event.body;
@@ -19,12 +21,17 @@ export default middyfy(async (event) => {
 
   const response = await docClient.send(command);
 
-  const queueCommand = new SendMessageCommand({
-    QueueUrl: process.env.QUEUE_URL!,
-    MessageBody: "User Created!"
-  })
+  await snsClient.send(new PublishCommand({
+    Message: "User Created!",
+    TopicArn: process.env.SNS_ARN!
+  }))
 
-  await queueClient.send(queueCommand);
+  // const queueCommand = new SendMessageCommand({
+  //   QueueUrl: process.env.QUEUE_URL!,
+  //   MessageBody: "User Created!"
+  // })
+
+  // await queueClient.send(queueCommand);
 
   return {
     statusCode: 200,
