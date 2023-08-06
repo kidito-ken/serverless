@@ -11,45 +11,17 @@ createUser:
           - MyAppDatabase
           - Arn
         - Fn::GetAtt:
-          - MyEventsQueue
-          - Arn
-        - Fn::GetAtt:
           - MySNSTopic
           - TopicArn
   environment:
     TABLE_NAME:
       Ref: MyAppDatabase
-    QUEUE_URL:
-      Ref: MyEventsQueue
     SNS_ARN:
       Ref: MySNSTopic
   events:
     - http:
         method: post
         path: /v1/users
-
-publisher:
-  handler: src/users/createUser/publisher.default
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - sqs:SendMessage
-      Resource:
-        - Fn::GetAtt:
-          - MyEventsQueue
-          - Arn
-  environment:
-    QUEUE_URL:
-      Ref: MyEventsQueue
-  events:
-    - sqs:
-          arn:
-            Fn::GetAtt:
-              - MyEventsQueue
-              - Arn    
-          batchSize: 10
-          maximumBatchingWindow: 60
-          functionResponseType: ReportBatchItemFailures
 
 
 deleteUser:

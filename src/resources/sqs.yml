@@ -1,6 +1,0 @@
-Resources:
-  MyEventsQueue:
-    Type: AWS::SQS::Queue
-    Properties:
-      QueueName: "MyEventsQueue"
-      VisibilityTimeout: 30
