@@ -3,7 +3,9 @@ import { readFileSync } from 'fs';
 import yml from 'js-yaml';
 
 const files = [
-  readFileSync("./src/resources/ddb.yml")
+  readFileSync("./src/resources/ddb.yml"),
+  readFileSync("./src/resources/sqs.yml"),
+  readFileSync("./src/resources/sns.yml")
 ];
 
 export default files.reduce((res, row) => {

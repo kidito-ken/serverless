@@ -21,7 +21,7 @@ module.exports = serverless({
       restApi: true
     }
   },
-  custom: { },
+  custom: {},
   functions: f,
   resources: r
 });
