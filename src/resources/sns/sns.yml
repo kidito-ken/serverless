@@ -2,4 +2,4 @@ Resources:
   MySNSTopic:
     Type: AWS::SNS::Topic
     Properties: 
-      TopicName: "UserCreatedTopic"
+      TopicName: "CreateUserTopic"

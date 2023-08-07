@@ -14,7 +14,7 @@ export default middyfy(async (event) => {
             body: JSON.stringify({
                 error: {
                     title: "ValidatationError",
-                    message: "required information is required"
+                    message: "required info missing"
                 }
             })
         }
