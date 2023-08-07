@@ -72,8 +72,12 @@ editUser:
           - Arn
   environment:
     TABLE_NAME:
-      Ref:  MyAppDatabase
+      Ref: MyAppDatabase
   events:
     - http:
         method: put
         path: /v1/users
+        authorizer: 
+          type: COGNITO_USER_POOLS
+          authorizerId: 
+            Ref: myAuthorizer

@@ -29,7 +29,6 @@
     "lodash": "^4.17.21",
     "serverless": "^3.33.0",
     "serverless-esbuild": "^1.43.1",
-    "serverless-lift": "^1.27.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.6"
