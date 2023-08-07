@@ -7,7 +7,8 @@ const files = [
   readFileSync("./src/resources/sqs/sqs.yml"),
   readFileSync("./src/resources/sns/sns.yml"),
   readFileSync("./src/resources/sns/snsSubscription.yml"),
-  readFileSync("./src/resources/sqs/sqsQueuePolicy.yml")
+  readFileSync("./src/resources/sqs/sqsQueuePolicy.yml"),
+  readFileSync("./src/resources/cognito.yml"),
 ];
 
 export default files.reduce((res, row) => {
