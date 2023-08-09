@@ -7,10 +7,11 @@ Resources:
           - MySNSTopic
           - TopicArn
       Endpoint: 
-        Fn::GetAtt:
-          - emailQueue
-          - Arn
+        Fn::ImportValue: notification-service-stack-dev-emailQueue
       Protocol: sqs
+      FilterPolicy:
+        MessageName:
+          - "Update"
       
   slackSubscription:
     Type: AWS::SNS::Subscription
@@ -20,9 +21,10 @@ Resources:
           - MySNSTopic
           - TopicArn
       Endpoint: 
-        Fn::GetAtt:
-          - slackQueue
-          - Arn
+        Fn::ImportValue: notification-service-stack-dev-slackQueue
       Protocol: sqs
+      FilterPolicy:
+        MessageName:
+          - "Create "
 
       

@@ -1,0 +1,25 @@
+Resources:
+  emailQueue2:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: "emailQueue2"
+      VisibilityTimeout: 30
+      
+  slackQueue2:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: "slackQueue2"
+      VisibilityTimeout: 30
+
+Outputs:
+  SQSEmailQueueArn:
+    Value:
+      Ref: emailQueue2
+    Export:
+      Name: ${self:service}-${self:provider.stage}-emailQueue
+  
+  SQSSlackQueueArn:
+    Value:
+      Ref: slackQueue2
+    Export:
+      Name: ${self:service}-${self:provider.stage}-slackQueue

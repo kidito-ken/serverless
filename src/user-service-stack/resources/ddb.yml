@@ -13,4 +13,4 @@ Resources:
         - AttributeName: sk
           KeyType: RANGE
       BillingMode: PAY_PER_REQUEST
-      TableName: calo-serverless-starter-${self:provider.stage}-table
+      TableName: ${self:provider.stage}-DynamoTable

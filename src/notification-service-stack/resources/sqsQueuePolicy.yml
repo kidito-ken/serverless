@@ -15,9 +15,7 @@ Resources:
           Condition: 
             ArnEquals:
               aws:SourceArn:
-                Fn::GetAtt:
-                - MySNSTopic
-                - TopicArn
+              - Fn::ImportValue: core-service-stack-dev-UserNotifyTopic
       Queues:
-        - Ref: emailQueue
-        - Ref: slackQueue
+        - Ref: emailQueue2
+        - Ref: slackQueue2

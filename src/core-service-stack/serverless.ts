@@ -1,10 +1,9 @@
-import serverless from './src/libs/baseServerless';
+import serverless from '../libs/baseServerless';
 
-import f from './functions';
 import r from './resources';
 
 module.exports = serverless({
-  service: 'calo-serverless-starter',
+  service: 'core-service-stack',
   provider: {
     architecture: 'x86_64',
     timeout: 29,
@@ -21,7 +20,6 @@ module.exports = serverless({
       restApi: true
     }
   },
-  custom: {},
-  functions: f,
+  custom: { },
   resources: r
 });
