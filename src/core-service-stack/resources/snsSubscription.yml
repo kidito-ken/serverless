@@ -25,6 +25,6 @@ Resources:
       Protocol: sqs
       FilterPolicy:
         MessageName:
-          - "Create "
+          - "Create"
 
       
