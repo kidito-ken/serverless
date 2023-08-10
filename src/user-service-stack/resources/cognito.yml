@@ -1,27 +1,34 @@
-# Userpool
 Resources:
-  myUsersPool:
+  CognitoUserPool: 
     Type: AWS::Cognito::UserPool
-
-# Userpool client
-  myUserPoolClient:
-    Type: AWS::Cognito::UserPoolClient
-    Properties:
-      ClientName: myUserPoolClient
-      GenerateSecret: false
+    Properties: 
+      UserPoolName: api-service-${self:provider.stage}-user-pool
+      UsernameAttributes: 
+        - email
+      AutoVerifiedAttributes: 
+        - email
+  
+  CognitoUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient 
+    Properties: 
+      ClientName: api-service-${self:provider.stage}-user-pool-client
       UserPoolId: 
-        Ref: myUsersPool
+        Ref: CognitoUserPool
+      ExplicitAuthFlows: 
+        - ADMIN_NO_SRP_AUTH
+      GenerateSecret: false
+      AccessTokenValidity: 5
+      IdTokenValidity: 5
 
-# authorizer
-  # myAuthorizer:
-  #   Type: AWS::ApiGateway::Authorizer
-  #   Properties:
-  #     Type: COGNITO_USER_POOLS
-  #     IdentitySource: method.request.header.Authorization
-  #     Name: userAuthorizer2
-  #     ProviderARNs: 
-  #       - Fn::GetAtt:
-  #         - myUsersPool
-  #         - Arn
-  #     RestApiId: 
-  #       Ref: ApiGatewayRestApi
+  CognitoAuthorizer: 
+    Type: AWS::ApiGateway::Authorizer
+    Properties: 
+      RestApiId: 
+        Ref: ApiGatewayRestApi
+      Name: cognito-user-authenticate
+      Type: COGNITO_USER_POOLS
+      IdentitySource: method.request.header.Authorization
+      ProviderARNs: 
+        - Fn::GetAtt:
+          - CognitoUserPool
+          - Arn

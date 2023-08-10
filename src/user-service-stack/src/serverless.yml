@@ -12,6 +12,10 @@ createUser:
           - MyAppDatabase
           - Arn
   environment:
+    USER_POOL: 
+      Ref: CognitoUserPool
+    USER_POOL_CLIENT: 
+      Ref: CognitoUserPoolClient
     TABLE_NAME:
       Ref: MyAppDatabase
     SNS_ARN:
@@ -59,10 +63,10 @@ editUser:
     - http:
         method: put
         path: /v1/users
-        # authorizer: 
-        #   type: COGNITO_USER_POOLS
-        #   authorizerId: 
-        #     Ref: myAuthorizer
+        authorizer: 
+          authorizerId: 
+            Ref: CognitoAuthorizer
+          type: COGNITO_USER_POOLS
 
 
 uploadProfilePicture:
