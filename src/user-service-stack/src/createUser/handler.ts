@@ -28,7 +28,7 @@ export default middyfy(async (event) => {
     MessageAttributes: {
       MessageName: {
         DataType: 'String',
-        StringValue: 'Create'
+        StringValue: 'Create',
       }
     }
   }));

@@ -71,12 +71,17 @@ uploadProfilePicture:
     - Effect: Allow
       Action:
         - s3:PutObject
+        - s3:PutObjectAcl
+        - s3:PutObjectTagging
+        - s3:PutBucketAcl
       Resource:
-        Fn::Join:
-          - ''
-          - - 'arn:aws:s3:::my-awesome-unique-long-s3-bucket-name-20230808/'
-            - Ref: AWS::AccountId
-            - '/*'
+        - Fn::GetAtt:
+          - imagesBucket
+          - Arn
+  environment:
+    BUCKET_NAME:
+      Ref: imagesBucket
+    REGION: 'us-east-1'
   events:
     - http:
         method: post

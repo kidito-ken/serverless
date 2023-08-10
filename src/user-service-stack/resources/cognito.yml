@@ -23,5 +23,5 @@ Resources:
   #       - Fn::GetAtt:
   #         - myUsersPool
   #         - Arn
-      # RestApiId: 
-      #   Ref: ApiGatewayRestApi
+  #     RestApiId: 
+  #       Ref: ApiGatewayRestApi

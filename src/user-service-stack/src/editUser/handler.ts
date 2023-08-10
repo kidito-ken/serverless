@@ -8,17 +8,17 @@ const snsClient = new SNSClient({});
 const docClient = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
 export default middyfy(async (event) => {
-    if (!event.requestContext.authorizer) {
-        return {
-            statusCode: 401,
-            body: JSON.stringify({
-                error: {
-                    title: 'Unauthorized',
-                    message: 'User is not authenticated',
-                },
-            }),
-        };
-    }
+    // if (!event.requestContext.authorizer) {
+    //     return {
+    //         statusCode: 401,
+    //         body: JSON.stringify({
+    //             error: {
+    //                 title: 'Unauthorized',
+    //                 message: 'User is not authenticated',
+    //             },
+    //         }),
+    //     };
+    // }
     const { name, email, newEmail } = event.body;
 
     if (!name || name.length === 0 || !email || email.length === 0 || !newEmail || newEmail.length === 0) {
@@ -49,18 +49,29 @@ export default middyfy(async (event) => {
 
     const response = await docClient.send(command);
 
-    const messageParameters = {
-        Message: "User Updated!",
+
+    await snsClient.send(new PublishCommand({
+        Message: "User Created!",
         TopicArn: process.env.SNS_ARN!,
         MessageAttributes: {
-            MessageName: {
-                DataType: 'String',
-                StringValue: 'Update',
-            },
-        },
-    };
+          MessageName: {
+            DataType: 'String',
+            StringValue: 'Update',
+          }
+        }
+      }));
+    // const messageParameters = {
+    //     Message: "User Updated!",
+    //     TopicArn: process.env.SNS_ARN!,
+    //     MessageAttributes: {
+    //         MessageName: {
+    //             DataType: 'String',
+    //             StringValue: 'Update',
+    //         },
+    //     },
+    // };
 
-    await snsClient.send(new PublishCommand(messageParameters));
+    // await snsClient.send(new PublishCommand(messageParameters));
 
     return {
         statusCode: 200,

@@ -1,5 +1,25 @@
 Resources:
-  MyBucket:
+  imagesBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: my-awesome-unique-long-s3-bucket-name-20230808
+      BucketName: moaz-super-cool-bucket
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: FALSE
+        BlockPublicPolicy: FALSE
+        IgnorePublicAcls: FALSE
+        RestrictPublicBuckets: FALSE
+
+  imagesBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: imagesBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: "*"
+            Action:
+              - s3:*
+            Resource:
+              Fn::Sub: "arn:aws:s3:::${imagesBucket}/*"
